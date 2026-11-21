@@ -59,4 +59,16 @@ pnpm --filter mobile test       # flutter test
 flutter pub add <paquete>       # dentro de apps/mobile
 ```
 
+**Simulador iOS 27 con Flutter 3.44:** `flutter devices` no ve los simuladores de iOS 27 y `flutter build ios --simulator` falla con Xcode 27 (`lipo -verify_arch` ya no acepta dos arquitecturas). Mientras Flutter no lo corrija, se compila para el simulador concreto, que solo construye arm64, y se instala el `.app`:
+
+```bash
+cd apps/mobile && flutter build ios --config-only
+xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Debug \
+  -destination 'id=<UDID del simulador>' -derivedDataPath build/ios-sim build
+xcrun simctl install booted build/ios-sim/Build/Products/Debug-iphonesimulator/Runner.app
+xcrun simctl launch booted mx.chucarit.chucarit
+```
+
+El deployment target de iOS es 15.0 (Xcode 27 ya no compila para 13).
+
 `apps/mobile/package.json` solo existe para que Turborepo corra `lint` y `test` de Flutter junto con el resto; las dependencias de la app están en `pubspec.yaml`.
