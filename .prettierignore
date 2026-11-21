@@ -4,8 +4,6 @@ pnpm-lock.yaml
 specs/
 **/dist/
 **/.next/
-**/.expo/
 **/coverage/
 **/drizzle/meta/
-apps/mobile/ios/
-apps/mobile/android/
+apps/mobile/

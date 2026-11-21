@@ -11,17 +11,14 @@ out/
 coverage/
 *.tsbuildinfo
 
-# Expo / React Native
-.expo/
-.expo-shared/
-apps/mobile/ios/
-apps/mobile/android/
+# Firmas y llaves de apps móviles
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
 *.mobileprovision
-web-build/
+key.properties
 
 # Entorno y credenciales
 .env
@@ -38,11 +35,6 @@ web-build/
 .vscode/*
 !.vscode/extensions.json
 
-# Expo / Metro (generados)
-expo-env.d.ts
-.metro-health-check*
-.kotlin/
-*.orig.*
 *.pem
 
 # Next.js

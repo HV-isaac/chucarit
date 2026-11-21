@@ -19,7 +19,9 @@
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "gen:dart": "pnpm run build && node scripts/generate-dart.ts",
+    "check:dart": "node scripts/generate-dart.ts --check"
   },
   "dependencies": {
     "zod": "catalog:"

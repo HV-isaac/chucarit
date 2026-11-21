@@ -17,7 +17,11 @@
       "Bash(git branch:*)",
       "Bash(docker compose -f infra/docker-compose.dev.yml *)",
       "Bash(specify check)",
-      "Bash(specify version)"
+      "Bash(specify version)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter test:*)",
+      "Bash(flutter pub get)",
+      "Bash(dart format:*)"
     ],
     "deny": [
       "Read(./**/.env)",

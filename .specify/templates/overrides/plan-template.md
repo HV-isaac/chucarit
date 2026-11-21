@@ -18,13 +18,13 @@ estructura quedan en inglés. «Branch» es la carpeta del trabajo: la rama es `
   Lo que no se sepa se marca NEEDS CLARIFICATION.
 -->
 
-**Language/Version**: [p. ej. TypeScript estricto / NestJS, Expo, Next.js]
+**Language/Version**: [p. ej. TypeScript estricto / NestJS, Next.js; Dart / Flutter]
 
 **Primary Dependencies**: [las que usa el trabajo; una nueva se acuerda antes]
 
 **Storage**: [p. ej. PostgreSQL + PostGIS con Drizzle y migraciones, Spaces, o N/A]
 
-**Testing**: [p. ej. unitarios de dominio, e2e del API con base real, jest-expo, Vitest]
+**Testing**: [p. ej. unitarios de dominio, e2e del API con base real, Vitest, flutter test]
 
 **Target Platform**: [API en el Droplet, panel en el navegador, iOS y Android]
 
@@ -76,7 +76,7 @@ specs/[###-nombre-en-kebab]/
 ```text
 packages/shared/src/...
 apps/api/src/...
-apps/mobile/app/...  apps/mobile/src/...
+apps/mobile/lib/src/features/...
 apps/admin/src/app/...
 ```
 

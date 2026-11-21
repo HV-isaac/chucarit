@@ -18,7 +18,7 @@ src/
   reports/           CRUD, transiciones de estado, historial, duplicados cercanos
   categories/
   uploads/           Emisión de URLs prefirmadas para Spaces
-  notifications/     Envío de push con expo-server-sdk
+  notifications/     Envío de push por FCM con firebase-admin
   stats/             Métricas de impacto (resueltos, tiempo promedio, por colonia)
   common/            Pipes (ZodValidationPipe), filtros de error, decoradores (@Roles, @CurrentUser)
 test/                Tests e2e (supertest) contra chucarit_test

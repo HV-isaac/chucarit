@@ -16,7 +16,7 @@ Revisa, según lo que toque el cambio:
 - **Privacidad**: ninguna respuesta pública, log, notificación push, metadato de foto (EXIF con GPS del domicilio) ni export CSV incluye nombre o contacto de quien reporta salvo para moderador/admin.
 - **Subidas**: URL prefirmada PUT con MIME restringido (jpeg/png/webp), tamaño máximo, expiración corta y key bajo `reports/<uuid>/`; al crear el reporte el API verifica que las keys existan y pertenezcan a ese usuario; el bucket no es listable.
 - **Panel**: tokens en cookies httpOnly, `Secure`, `SameSite`; protección CSRF en route handlers que mutan.
-- **App**: tokens en `expo-secure-store`.
+- **App**: tokens en `flutter_secure_storage`; nada sensible en `shared_preferences` ni en logs.
 - **Entrada**: todo validado con zod; SQL espacial parametrizado; nada de interpolar strings en `sql`.
 - **Secretos**: ninguno en el repo, en logs ni en respuestas de error.
 

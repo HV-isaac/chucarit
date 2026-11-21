@@ -24,6 +24,11 @@
     "test:e2e": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "@chucarit/shared#test": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/apps/mobile/lib/src/shared/domain.g.dart"],
+      "outputs": ["coverage/**"]
     }
   }
 }

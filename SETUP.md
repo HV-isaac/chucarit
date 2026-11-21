@@ -13,7 +13,7 @@ apps/*/CLAUDE.md              Reglas de cada app (API, mobile, admin)
   spec-architect.md           Revisa trabajos de Spec Kit y escribe ADRs (opus)
   api-nestjs.md               Backend (sonnet)
   db-postgis.md               Esquema, migraciones y consultas espaciales (sonnet)
-  mobile-expo.md              App móvil (sonnet)
+  mobile-flutter.md           App móvil (sonnet)
   admin-nextjs.md             Panel web (sonnet)
   devops.md                   Docker, CI/CD, Droplet, respaldos (sonnet)
   code-reviewer.md            Revisión de código, solo lectura (opus)
@@ -31,7 +31,7 @@ Claude Code carga el `CLAUDE.md` de cada carpeta de `apps/` cuando trabaja en el
 - Node.js 24 (`.nvmrc`); mínimo 22
 - pnpm 11: `corepack enable` (la versión exacta está en `packageManager` del `package.json`)
 - Docker Desktop (Postgres + PostGIS local)
-- Xcode con iOS Simulator y/o Android Studio para la app
+- Flutter 3.44 (Dart 3.12) con Xcode y/o Android Studio para la app (`flutter doctor`)
 - Spec Kit: `uv tool install specify-cli` (solo si vas a actualizar las plantillas o skills con `specify`)
 - Claude Code con sesión iniciada
 
@@ -46,7 +46,7 @@ pnpm dev
 
 - API: http://localhost:3100/health
 - Panel: http://localhost:3200
-- App: en la terminal de Metro, `i` para iOS o `a` para Android
+- App: `cd apps/mobile && flutter run` (simulador o dispositivo; no corre con `pnpm dev`)
 
 Antes de dar algo por terminado: `pnpm lint && pnpm typecheck && pnpm test`.
 

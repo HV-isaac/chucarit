@@ -8,21 +8,21 @@ App gratuita para que los habitantes del pueblo reporten problemas de la comunid
 
 ## Stack
 
-| Parte           | Tecnología                                                             |
-| --------------- | ---------------------------------------------------------------------- |
-| Monorepo        | pnpm workspaces + Turborepo, TypeScript estricto                       |
-| API             | NestJS 12, zod, Drizzle ORM, PostgreSQL 16 + PostGIS                   |
-| App             | Expo SDK 58, Expo Router, TanStack Query                               |
-| Panel           | Next.js 16 (App Router), Tailwind CSS 4, shadcn/ui                     |
-| Compartido      | `@chucarit/shared`: estados, roles y transiciones permitidas (zod)     |
-| Infraestructura | Droplet de DigitalOcean, Docker Compose, Caddy, Spaces, GitHub Actions |
+| Parte           | Tecnología                                                                             |
+| --------------- | -------------------------------------------------------------------------------------- |
+| Monorepo        | pnpm workspaces + Turborepo, TypeScript estricto                                       |
+| API             | NestJS 12, zod, Drizzle ORM, PostgreSQL 16 + PostGIS                                   |
+| App             | Flutter 3.44, go_router, Riverpod                                                      |
+| Panel           | Next.js 16 (App Router), Tailwind CSS 4, shadcn/ui                                     |
+| Compartido      | `@chucarit/shared`: estados, roles y transiciones (zod), con Dart generado para la app |
+| Infraestructura | Droplet de DigitalOcean, Docker Compose, Caddy, Spaces, GitHub Actions                 |
 
 ## Estructura
 
 ```
 apps/
   api/        API REST (NestJS)
-  mobile/     App para ciudadanos (Expo)
+  mobile/     App para ciudadanos (Flutter)
   admin/      Panel para moderadores y responsables (Next.js)
 packages/
   shared/     Esquemas, tipos y constantes del dominio
@@ -34,7 +34,7 @@ docs/adr/     Decisiones de arquitectura
 
 ## Desarrollo
 
-Requisitos: Node.js 24, pnpm 11 (`corepack enable`) y Docker.
+Requisitos: Node.js 24, pnpm 11 (`corepack enable`), Docker y Flutter 3.44.
 
 ```bash
 pnpm install
@@ -43,11 +43,11 @@ cp apps/api/.env.example apps/api/.env
 pnpm dev
 ```
 
-| Servicio | URL                                             |
-| -------- | ----------------------------------------------- |
-| API      | http://localhost:3100/health                    |
-| Panel    | http://localhost:3200                           |
-| App      | Metro en la terminal: `i` (iOS) o `a` (Android) |
+| Servicio | URL                             |
+| -------- | ------------------------------- |
+| API      | http://localhost:3100/health    |
+| Panel    | http://localhost:3200           |
+| App      | `cd apps/mobile && flutter run` |
 
 Calidad:
 

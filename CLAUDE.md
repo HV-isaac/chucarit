@@ -9,7 +9,7 @@ pnpm workspaces + Turborepo.
 ```
 apps/
   api/      NestJS (TypeScript) — API REST
-  mobile/   Expo (React Native, TypeScript) — app para ciudadanos
+  mobile/   Flutter (Dart) — app para ciudadanos
   admin/    Next.js (App Router) — panel para moderadores y responsables
 packages/
   shared/   Esquemas zod, tipos y constantes compartidos (estados, categorías, roles)
@@ -20,7 +20,7 @@ specs/      Trabajos de Spec Kit: una carpeta por trabajo (spec, plan, tareas)
 docs/adr/   Decisiones de arquitectura
 ```
 
-Puertos locales: API `3100`, panel `3200`, Metro `8081`, Postgres `127.0.0.1:5437`.
+Puertos locales: API `3100`, panel `3200`, Postgres `127.0.0.1:5437`.
 
 Cada app tiene su propio `CLAUDE.md` con detalles específicos.
 
@@ -29,7 +29,8 @@ Cada app tiene su propio `CLAUDE.md` con detalles específicos.
 - **Base de datos:** PostgreSQL 16 + PostGIS. ORM: Drizzle; SQL directo para consultas espaciales complejas.
 - **API:** NestJS, validación con zod (esquemas en `packages/shared`), auth con JWT (access + refresh) y argon2.
 - **Fotos:** DigitalOcean Spaces (S3-compatible). El cliente sube directo con URLs prefirmadas; las fotos nunca pasan por el API.
-- **Push:** Expo Push Notifications.
+- **App:** Flutter (iOS y Android).
+- **Push:** Firebase Cloud Messaging (`firebase_messaging` en la app, `firebase-admin` en el API).
 - **Infra:** Droplet de DigitalOcean, Docker Compose, Caddy (HTTPS automático), GitHub Actions para CI/CD.
 
 ## Dominio
@@ -79,7 +80,7 @@ Correcciones pequeñas (typos, estilos, un bug de una línea) no necesitan traba
 | `spec-architect`    | Revisar trabajos de Spec Kit, modelo de datos, contratos del API, ADRs    |
 | `api-nestjs`        | Módulos, controladores, servicios, guards y tests del API                 |
 | `db-postgis`        | Esquema Drizzle, migraciones, índices y consultas espaciales              |
-| `mobile-expo`       | Pantallas, navegación, cámara, mapa, cola offline y push en la app        |
+| `mobile-flutter`    | Pantallas, navegación, cámara, mapa, cola offline y push en la app        |
 | `admin-nextjs`      | Panel web: mapa, tablero de reportes, asignación, estadísticas            |
 | `devops`            | Docker, Caddy, GitHub Actions, despliegue al Droplet, respaldos           |
 | `code-reviewer`     | Revisión después de cada cambio (solo lectura)                            |
@@ -90,18 +91,20 @@ Delega por área. Si un cambio cruza áreas (p. ej. nuevo campo en reportes), em
 ## Convenciones
 
 - Código, nombres de variables, commits y ramas en **inglés**. Textos de UI, specs y docs en **español**.
-- TypeScript estricto en todo el monorepo. Nada de `any` sin un comentario que lo justifique.
+- TypeScript estricto en todo el monorepo. Nada de `any` sin un comentario que lo justifique. En la app, análisis estricto de Dart.
 - Commits con Conventional Commits (`feat(api): ...`, `fix(mobile): ...`).
 - Ramas: `feat/<nombre-del-trabajo>` (el nombre de la carpeta en `specs/`, sin el número).
 - Cada feature incluye tests. Mínimo: tests unitarios de la lógica de dominio y tests e2e de los endpoints con permisos.
-- Los tipos y esquemas que usan dos o más apps viven en `packages/shared`, no se duplican.
+- Los tipos y esquemas que usan dos o más apps viven en `packages/shared`, no se duplican. La app Flutter recibe estados, roles y transiciones como Dart generado (`pnpm --filter @chucarit/shared gen:dart` escribe `apps/mobile/lib/src/shared/domain.g.dart`); nunca se edita a mano.
 - Nunca leer, imprimir ni commitear `.env` ni credenciales. Las variables nuevas se documentan en `.env.example`.
 
 ## Comandos
 
 ```bash
 pnpm install
-pnpm dev                 # todo en paralelo (turbo)
+pnpm dev                 # API y panel en paralelo (turbo)
+(cd apps/mobile && flutter run)            # app en simulador o dispositivo
+pnpm --filter @chucarit/shared gen:dart    # regenera el Dart de la app tras cambiar packages/shared
 pnpm lint
 pnpm typecheck
 pnpm test

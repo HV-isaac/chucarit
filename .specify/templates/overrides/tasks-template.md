@@ -70,7 +70,7 @@ description: "Plantilla de la lista de tareas de un trabajo de Chucarit"
 - [ ] T006 [P] [US1] Tests unitarios y e2e (feliz, sin token, rol incorrecto, recurso ajeno) en `apps/api/...` · API
 - [ ] T007 [US1] Servicio y controlador en `apps/api/src/...` · API
 - [ ] T008 [US1] Pantalla en `apps/admin/src/app/...` con su test · Admin
-- [ ] T009 [US1] Pantalla en `apps/mobile/app/...` con su test · Mobile
+- [ ] T009 [US1] Pantalla en `apps/mobile/lib/src/features/...` con su test · Mobile
 
 **Checkpoint**: la historia 1 funciona y se puede comprobar sola
 

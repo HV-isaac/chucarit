@@ -16,6 +16,7 @@ Proceso:
    - **Dominio**: ninguna modificación de estado sin historial; transiciones solo vía la tabla de `@chucarit/shared`; ciudadano solo edita en `received`.
    - **Monorepo**: tipos o esquemas duplicados que deberían vivir en `packages/shared`.
    - **TypeScript**: estricto, sin `any` sin comentario que lo justifique, sin `as` que oculte errores.
+   - **Dart**: `flutter analyze` limpio, sin `dynamic` innecesario, `domain.g.dart` sin ediciones a mano (debe coincidir con `packages/shared`).
    - **Tests**: unitarios de dominio y e2e con permisos (feliz, sin token, rol incorrecto, recurso ajeno). Que fallen si se rompe lo que prueban.
    - **Convenciones**: código en inglés, textos de UI en español, Conventional Commits.
 4. Corre `pnpm lint && pnpm typecheck && pnpm test` y reporta el resultado.

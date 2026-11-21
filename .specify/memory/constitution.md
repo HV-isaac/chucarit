@@ -1,6 +1,6 @@
 # Constitución de Chucarit
 
-Principios de trabajo del monorepo de Chucarit: el API NestJS (`apps/api`), la app Expo para
+Principios de trabajo del monorepo de Chucarit: el API NestJS (`apps/api`), la app Flutter para
 ciudadanos (`apps/mobile`), el panel Next.js para moderadores y responsables (`apps/admin`) y el
 paquete compartido (`packages/shared`). Son pocos a propósito: el detalle de arquitectura,
 comandos y convenciones está en `CLAUDE.md` y en el `CLAUDE.md` de cada app, que son la fuente;
@@ -31,7 +31,8 @@ rol, pero nunca son la autoridad.
 ### IV. Un contrato, un lugar
 
 Los esquemas zod, tipos y constantes que usan dos o más apps viven en `packages/shared` y no se
-duplican. Un trabajo que cambia el contrato lo dice en «Contrato afectado» de su plan, empieza
+duplican. La app Flutter los recibe como Dart generado (`apps/mobile/lib/src/shared/domain.g.dart`),
+que nunca se edita a mano; un test falla si quedó desactualizado. Un trabajo que cambia el contrato lo dice en «Contrato afectado» de su plan, empieza
 por `packages/shared` y `db`, luego el API, luego los clientes.
 
 ### V. La spec se acuerda antes de planear
@@ -48,7 +49,8 @@ Toda tarea de `tasks.md` lleva casilla, sin excepción: `- [ ]` pendiente, `- [~
 
 ### VII. Calidad de portafolio: tipos estrictos y tests
 
-TypeScript estricto en todo el monorepo, sin `any` sin un comentario que lo justifique. Cada
+TypeScript estricto en todo el monorepo, sin `any` sin un comentario que lo justifique, y
+análisis estricto de Dart en la app. Cada
 trabajo incluye tests: unitarios de la lógica de dominio y e2e de los endpoints con permisos
 (caso feliz, sin token, rol incorrecto, recurso ajeno). Un trabajo no está terminado si
 `pnpm lint && pnpm typecheck && pnpm test` no pasa.
@@ -91,4 +93,4 @@ seguir. Las convenciones de código son las de `CLAUDE.md`; si las dos se contra
 la que esté desfasada en el mismo trabajo. Cambiar un principio es cambiar este archivo, con su
 versión y su fecha.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-20 | **Last Amended**: 2026-11-20
+**Version**: 1.1.0 | **Ratified**: 2026-11-20 | **Last Amended**: 2026-11-21

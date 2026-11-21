@@ -1,53 +1,62 @@
-# apps/mobile — Expo
+# apps/mobile — Flutter
 
-@AGENTS.md
+App para ciudadanos: reportar problemas y seguir su resolución. iOS y Android.
 
 ## Stack
 
-- Expo SDK 58 con Expo Router (rutas por archivos en `src/app/`; el código que no es ruta va fuera de esa carpeta).
-- TanStack Query para datos del servidor; Zustand solo para estado local de UI si hace falta.
-- Mapa: `react-native-maps`.
-- Cámara y galería: `expo-image-picker`; compresión con `expo-image-manipulator` antes de subir.
-- Ubicación: `expo-location`.
-- Tokens en `expo-secure-store` (nunca en AsyncStorage).
-- Push: `expo-notifications`.
+- Flutter 3.44 / Dart 3.12, con análisis estricto (`analysis_options.yaml`).
+- Navegación: `go_router` (rutas en `lib/src/router.dart`).
+- Estado y datos del servidor: `flutter_riverpod` (providers por feature; nada de estado global suelto).
+- HTTP: `dio`, con un interceptor que renueva el access token con el refresh token.
+- Mapa: `flutter_map` con tiles gratuitos (OpenStreetMap), igual que el panel.
+- Cámara y galería: `image_picker`; compresión con `flutter_image_compress` antes de subir.
+- Ubicación: `geolocator`.
+- Tokens en `flutter_secure_storage` (nunca en `shared_preferences`).
+- Cola offline: SQLite con `drift`.
+- Push: Firebase Cloud Messaging con `firebase_messaging`.
+
+Las dependencias se agregan cuando un trabajo las necesita, no antes (hoy solo están `go_router` y `flutter_riverpod`).
 
 ## Estructura
 
 ```
-src/
-  app/               Pantallas (Expo Router)
-    (auth)/          Login, registro, verificación
-    (tabs)/          Mapa, Mis reportes, Perfil
-    report/new.tsx   Flujo de nuevo reporte
-    report/[id].tsx  Detalle con línea de tiempo de estados
-  __tests__/         Tests (jest-expo + Testing Library); nunca dentro de src/app/
-  api/               Cliente HTTP y hooks de TanStack Query
-  components/
-  features/          Lógica por feature (report-form, offline-queue, ...)
-  lib/               Utilidades (compresión de imágenes, permisos, formato de fechas)
+lib/
+  main.dart            runApp con ProviderScope
+  src/
+    app.dart           MaterialApp.router y tema
+    router.dart        Rutas (go_router)
+    shared/
+      domain.g.dart    GENERADO desde packages/shared: estados, roles, transiciones
+    core/              Cliente HTTP, almacenamiento seguro, permisos, formato de fechas
+    features/          Una carpeta por feature (auth, report_form, my_reports, report_detail,
+                       offline_queue, ...), cada una con sus pantallas, widgets y providers
+test/                  Espeja la estructura de lib/
 ```
+
+## El contrato con el API
+
+- Estados, roles, etiquetas en español y la tabla de transiciones **no se escriben aquí**: salen de `lib/src/shared/domain.g.dart`, que se genera desde `packages/shared` con `pnpm --filter @chucarit/shared gen:dart`. Nunca se edita a mano; un test de `packages/shared` falla si quedó desactualizado.
+- Si la app necesita una constante nueva del dominio, se agrega en `packages/shared` y se regenera.
+- Los modelos de respuesta del API (reportes, usuarios) viven en `lib/src/features/<feature>/` y usan `ReportStatus.fromValue(...)` para los enums.
 
 ## Reglas de UX
 
 - El flujo de reporte debe completarse en menos de un minuto: foto → ubicación (prellenada con GPS, ajustable en el mapa) → categoría → descripción opcional → enviar.
-- Fotos: redimensionar a ~1280 px de lado mayor, calidad ~0.7, máximo 3 por reporte. Generar también miniatura para listas.
+- Fotos: redimensionar a ~1280 px de lado mayor, calidad ~70, máximo 3 por reporte, sin metadatos EXIF de ubicación. Generar también miniatura para listas.
 - **Cola offline:** si no hay conexión, el reporte se guarda localmente y se envía al recuperar señal. El usuario ve claramente "pendiente de enviar".
 - Antes de enviar, mostrar reportes similares cercanos y ofrecer "apoyar este reporte" en vez de duplicarlo.
 - El detalle de un reporte muestra la línea de tiempo completa de estados con fechas.
 - Textos en español, claros y sin tecnicismos; muchas personas usuarias no son técnicas.
-- Accesibilidad: áreas táctiles de 44 pt mínimo, `accessibilityLabel` en íconos, buen contraste.
+- Accesibilidad: áreas táctiles de 48 dp mínimo, `Semantics`/`tooltip` en íconos, buen contraste, respeta el tamaño de letra del sistema.
 - Pedir permisos (cámara, ubicación, notificaciones) en el momento en que se necesitan, con una explicación previa.
-
-## Tipos
-
-Usa los tipos y esquemas de `@chucarit/shared`. No redefinir estados, categorías ni formas de respuesta del API aquí.
 
 ## Comandos
 
 ```bash
-pnpm --filter mobile dev        # Metro; i = iOS, a = Android
-pnpm --filter mobile test       # jest-expo
-pnpm --filter mobile doctor     # expo-doctor
-pnpm --filter mobile exec expo install <paquete>   # dependencias con la versión del SDK
+cd apps/mobile && flutter run   # en simulador o dispositivo
+pnpm --filter mobile lint       # dart format (sin cambios) + flutter analyze
+pnpm --filter mobile test       # flutter test
+flutter pub add <paquete>       # dentro de apps/mobile
 ```
+
+`apps/mobile/package.json` solo existe para que Turborepo corra `lint` y `test` de Flutter junto con el resto; las dependencias de la app están en `pubspec.yaml`.
