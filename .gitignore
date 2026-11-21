@@ -37,3 +37,14 @@ web-build/
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Expo / Metro (generados)
+expo-env.d.ts
+.metro-health-check*
+.kotlin/
+*.orig.*
+*.pem
+
+# Next.js
+next-env.d.ts
+.vercel/

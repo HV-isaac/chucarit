@@ -1,8 +1,10 @@
 # apps/mobile — Expo
 
+@AGENTS.md
+
 ## Stack
 
-- Expo (SDK estable más reciente) con Expo Router (rutas por archivos en `app/`).
+- Expo SDK 58 con Expo Router (rutas por archivos en `src/app/`; el código que no es ruta va fuera de esa carpeta).
 - TanStack Query para datos del servidor; Zustand solo para estado local de UI si hace falta.
 - Mapa: `react-native-maps`.
 - Cámara y galería: `expo-image-picker`; compresión con `expo-image-manipulator` antes de subir.
@@ -13,12 +15,13 @@
 ## Estructura
 
 ```
-app/                 Pantallas (Expo Router)
-  (auth)/            Login, registro, verificación
-  (tabs)/            Mapa, Mis reportes, Perfil
-  report/new.tsx     Flujo de nuevo reporte
-  report/[id].tsx    Detalle con línea de tiempo de estados
 src/
+  app/               Pantallas (Expo Router)
+    (auth)/          Login, registro, verificación
+    (tabs)/          Mapa, Mis reportes, Perfil
+    report/new.tsx   Flujo de nuevo reporte
+    report/[id].tsx  Detalle con línea de tiempo de estados
+  __tests__/         Tests (jest-expo + Testing Library); nunca dentro de src/app/
   api/               Cliente HTTP y hooks de TanStack Query
   components/
   features/          Lógica por feature (report-form, offline-queue, ...)
@@ -39,3 +42,12 @@ src/
 ## Tipos
 
 Usa los tipos y esquemas de `@chucarit/shared`. No redefinir estados, categorías ni formas de respuesta del API aquí.
+
+## Comandos
+
+```bash
+pnpm --filter mobile dev        # Metro; i = iOS, a = Android
+pnpm --filter mobile test       # jest-expo
+pnpm --filter mobile doctor     # expo-doctor
+pnpm --filter mobile exec expo install <paquete>   # dependencias con la versión del SDK
+```

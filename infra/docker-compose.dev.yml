@@ -1,0 +1,32 @@
+# Postgres 16 + PostGIS para desarrollo local y tests e2e.
+# Uso: docker compose -f infra/docker-compose.dev.yml up -d
+# Credenciales solo locales; producción usa su propio .env fuera del repo.
+name: chucarit
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.5
+    # The official image is amd64 only. On Apple Silicon it runs under emulation, which keeps
+    # parity with CI and the Droplet (amd64).
+    platform: linux/amd64
+    container_name: chucarit-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: chucarit
+      POSTGRES_PASSWORD: chucarit
+      POSTGRES_DB: chucarit
+    ports:
+      - '127.0.0.1:5437:5432'
+    volumes:
+      - chucarit-pg-data:/var/lib/postgresql/data
+      # Single file mount: the image's own 10_postgis.sh must stay in the init directory.
+      - ./postgres/init/20-test-database.sh:/docker-entrypoint-initdb.d/20-test-database.sh:ro
+    healthcheck:
+      # Over TCP: during init the temporary server only listens on the Unix socket.
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U chucarit -d chucarit_test']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  chucarit-pg-data:

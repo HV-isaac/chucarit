@@ -74,15 +74,15 @@ Correcciones pequeñas (typos, estilos, un bug de una línea) no necesitan traba
 
 ## Subagentes
 
-| Agente | Úsalo para |
-|---|---|
-| `spec-architect` | Revisar trabajos de Spec Kit, modelo de datos, contratos del API, ADRs |
-| `api-nestjs` | Módulos, controladores, servicios, guards y tests del API |
-| `db-postgis` | Esquema Drizzle, migraciones, índices y consultas espaciales |
-| `mobile-expo` | Pantallas, navegación, cámara, mapa, cola offline y push en la app |
-| `admin-nextjs` | Panel web: mapa, tablero de reportes, asignación, estadísticas |
-| `devops` | Docker, Caddy, GitHub Actions, despliegue al Droplet, respaldos |
-| `code-reviewer` | Revisión después de cada cambio (solo lectura) |
+| Agente              | Úsalo para                                                                |
+| ------------------- | ------------------------------------------------------------------------- |
+| `spec-architect`    | Revisar trabajos de Spec Kit, modelo de datos, contratos del API, ADRs    |
+| `api-nestjs`        | Módulos, controladores, servicios, guards y tests del API                 |
+| `db-postgis`        | Esquema Drizzle, migraciones, índices y consultas espaciales              |
+| `mobile-expo`       | Pantallas, navegación, cámara, mapa, cola offline y push en la app        |
+| `admin-nextjs`      | Panel web: mapa, tablero de reportes, asignación, estadísticas            |
+| `devops`            | Docker, Caddy, GitHub Actions, despliegue al Droplet, respaldos           |
+| `code-reviewer`     | Revisión después de cada cambio (solo lectura)                            |
 | `security-reviewer` | Auth, permisos por rol, datos personales, URLs prefirmadas (solo lectura) |
 
 Delega por área. Si un cambio cruza áreas (p. ej. nuevo campo en reportes), empieza por `packages/shared` y `db-postgis`, luego API, luego clientes.

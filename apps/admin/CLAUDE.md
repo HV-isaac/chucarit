@@ -1,11 +1,13 @@
 # apps/admin — Next.js
 
+@AGENTS.md
+
 Panel para `moderator`, `responder` y `admin`. Los ciudadanos no entran aquí.
 
 ## Stack
 
 - Next.js con App Router y Server Components por defecto; Client Components solo donde haya interacción.
-- Tailwind CSS + shadcn/ui.
+- Tailwind CSS 4 + shadcn/ui (estilo `base-nova` sobre Base UI; componentes con `pnpm --filter admin exec shadcn add <componente>`).
 - TanStack Query en componentes cliente que necesiten refrescar datos.
 - Mapa: MapLibre GL (`react-map-gl/maplibre`) con tiles gratuitos.
 - Gráficas: Recharts.
@@ -25,3 +27,11 @@ Panel para `moderator`, `responder` y `admin`. Los ciudadanos no entran aquí.
 - Middleware que redirige a login si no hay sesión y oculta secciones según rol. El API sigue siendo la autoridad de permisos; el panel solo oculta la UI.
 - Acciones destructivas o de cambio de estado piden confirmación.
 - Textos en español.
+
+## Comandos
+
+```bash
+pnpm --filter admin dev         # http://localhost:3200
+pnpm --filter admin test        # Vitest + Testing Library
+pnpm --filter admin build
+```

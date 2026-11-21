@@ -1,0 +1,24 @@
+{
+  "name": "chucarit",
+  "private": true,
+  "description": "Reportes ciudadanos de problemas de la comunidad y seguimiento de su resolución",
+  "packageManager": "pnpm@11.15.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "catalog:",
+    "turbo": "^2.11.13",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,20 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Versions shared by several workspaces. Reference them with "catalog:".
+catalog:
+  '@types/node': ^24.0.0
+  eslint: ^9.39.0
+  prettier: ^3.10.1
+  typescript: ~6.0.3
+  typescript-eslint: ^8.73.0
+  vitest: ^4.1.2
+  zod: ^4.6.7
+
+# pnpm only runs dependency install scripts that are listed here.
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: false
+  unrs-resolver: false
