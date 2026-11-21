@@ -1,0 +1,39 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Builds y cachés
+dist/
+build/
+.turbo/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Expo / React Native
+.expo/
+.expo-shared/
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+web-build/
+
+# Entorno y credenciales
+.env
+.env.*
+!.env.example
+
+# Claude Code (personal)
+.claude/settings.local.json
+
+# Sistema y editores
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
