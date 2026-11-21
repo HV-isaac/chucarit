@@ -1,5 +1,5 @@
 // Shared ESLint flat config for TypeScript packages (API, shared).
-// Apps with a framework config (Next.js, Expo) compose `strictTypeScriptRules` on top of theirs.
+// Apps with a framework config (Next.js) compose `strictTypeScriptRules` on top of theirs.
 // No `consistent-type-imports` here: Nest relies on value imports for decorator metadata (DI).
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
