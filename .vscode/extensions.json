@@ -1,0 +1,14 @@
+{
+  // Extensiones recomendadas para el monorepo. VS Code las ofrece al abrir la carpeta.
+  "recommendations": [
+    "anthropic.claude-code",
+    "dart-code.flutter",
+    "dart-code.dart-code",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "vitest.explorer",
+    "editorconfig.editorconfig",
+    "ms-azuretools.vscode-containers"
+  ]
+}
