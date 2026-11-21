@@ -1,0 +1,42 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Arranca el API en modo watch con el depurador conectado (lee apps/api/.env).
+      "name": "API (NestJS)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm --filter api start:debug",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Panel (Next.js)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm --filter admin dev",
+      "cwd": "${workspaceFolder}",
+      "serverReadyAction": {
+        "pattern": "Local:\\s+(https?://\\S+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      }
+    },
+    {
+      // Elige el dispositivo en la barra de estado de VS Code. Flutter 3.44 aún no ve los
+      // simuladores de iOS 27: ver apps/mobile/CLAUDE.md.
+      "name": "App (Flutter)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/mobile",
+      "program": "lib/main.dart"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "API + Panel",
+      "configurations": ["API (NestJS)", "Panel (Next.js)"],
+      "preLaunchTask": "Base de datos: levantar",
+      "stopAll": true
+    }
+  ]
+}

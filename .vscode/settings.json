@@ -1,0 +1,48 @@
+{
+  // Formato al guardar: Prettier para TypeScript, JSON, CSS, Markdown y YAML; dart format para Dart.
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.rulers": [80],
+    "editor.selectionHighlight": false,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  },
+
+  // TypeScript del monorepo (la versión del catálogo de pnpm), no la que trae VS Code.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // ESLint encuentra la config de cada app y paquete.
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+
+  // Flutter vive en apps/mobile.
+  "dart.projectSearchDepth": 3,
+
+  // Archivos generados: fuera de búsquedas; domain.g.dart se ve pero no se edita.
+  "files.readonlyInclude": {
+    "apps/mobile/lib/src/shared/domain.g.dart": true
+  },
+  "files.exclude": {
+    "**/.turbo": true,
+    "**/.dart_tool": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true,
+    "**/build": true,
+    "**/coverage": true,
+    "pnpm-lock.yaml": true,
+    "apps/mobile/pubspec.lock": true,
+    ".claude/skills": true
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.configFile": "apps/admin/src/app/globals.css"
+}
