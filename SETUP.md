@@ -99,10 +99,13 @@ Al terminar:
 Usa code-reviewer y security-reviewer para revisar los cambios.
 ```
 
-**c) CI**
+**c) Despliegue**
+
+El CI ya está en `.github/workflows/ci.yml` (TypeScript, e2e del API con PostGIS y Flutter, en cada PR). Lo que sigue es el despliegue:
 
 ```
-Usa devops para crear el workflow de CI en GitHub Actions según su definición.
+Usa devops para el despliegue al Droplet según la ADR 0002: compose de producción,
+Caddyfile, workflow de CD y respaldos de Postgres a Spaces.
 ```
 
 ## Notas

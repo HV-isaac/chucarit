@@ -1,0 +1,126 @@
+# Integración continua. Tres jobs independientes:
+#   - typescript: formato, lint, tipos, tests y build de todos los workspaces de pnpm
+#     salvo `mobile`, que necesita el SDK de Flutter y se cubre en el job `flutter`.
+#   - api-e2e: tests e2e del API contra un PostGIS efímero.
+#   - flutter: formato, análisis y tests de la app (apps/mobile).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  typescript:
+    name: 'TypeScript: formato, lint, tipos, tests y build'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v7
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Configurar Node con caché de pnpm
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Restaurar caché de Turborepo
+        uses: actions/cache@v6
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Revisar formato
+        run: pnpm format:check
+
+      - name: Lint, tipos, tests y build
+        run: pnpm exec turbo run lint typecheck test build --filter='!mobile'
+
+  api-e2e:
+    name: 'API: tests e2e con PostGIS'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgis/postgis:16-3.5
+        # Credenciales de un contenedor efímero de CI, no son secretos.
+        env:
+          POSTGRES_USER: chucarit
+          POSTGRES_PASSWORD: chucarit
+          POSTGRES_DB: chucarit_test
+        ports:
+          - 5432:5432
+        # Healthcheck por TCP a propósito: por socket la imagen se marca sana
+        # antes de terminar el init que activa PostGIS.
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U chucarit -d chucarit_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v7
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Configurar Node con caché de pnpm
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Tests e2e del API
+        run: pnpm exec turbo run test:e2e
+        env:
+          # Base de un contenedor efímero de CI, no es un secreto.
+          TEST_DATABASE_URL: postgres://chucarit:chucarit@localhost:5432/chucarit_test
+
+  flutter:
+    name: 'App: formato, análisis y tests de Flutter'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v7
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.44.0
+          channel: stable
+          cache: true
+
+      - name: Instalar dependencias de Dart
+        run: flutter pub get
+
+      - name: Revisar formato
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analizar
+        run: flutter analyze
+
+      - name: Tests
+        run: flutter test
