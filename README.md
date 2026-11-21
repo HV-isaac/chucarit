@@ -56,6 +56,16 @@ pnpm lint && pnpm typecheck && pnpm test
 pnpm test:e2e     # e2e del API contra la base de pruebas
 ```
 
+## Integración continua
+
+[GitHub Actions](.github/workflows/ci.yml) corre en cada PR y en cada push a `main`, con tres jobs en paralelo:
+
+| Job          | Qué valida                                                                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `typescript` | Formato (Prettier), ESLint, tipos, tests unitarios y build del API, el panel y `packages/shared`, incluido que el Dart generado para la app esté al día |
+| `api-e2e`    | Tests e2e del API contra PostgreSQL + PostGIS reales                                                                                                    |
+| `flutter`    | `dart format`, `flutter analyze` y `flutter test` de la app                                                                                             |
+
 ## Cómo se trabaja
 
 Cada cambio no trivial empieza como una especificación en `specs/` (Spec Kit): historias con prioridad, requisitos y criterios de éxito, luego plan y tareas, y solo entonces código. Los principios que ningún cambio se salta están en [`.specify/memory/constitution.md`](.specify/memory/constitution.md); el contexto para agentes de IA, en [`CLAUDE.md`](CLAUDE.md).
